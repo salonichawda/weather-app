@@ -3,7 +3,7 @@ import { useState } from "react";
 const Header = ({ DataList, handleSearch }) => {
   const [inputValue, setInputValue] = useState("");
   return (
-    <header>
+    <header className="App-header">
       <nav className="navbar bg-body-primary">
         <div className="container-fluid">
           <h2 className="navbar-brand">Weather App</h2>
