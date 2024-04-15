@@ -1,50 +1,44 @@
 import { useEffect, useState } from "react";
 import Header from "./Header";
+import CityDetails from "./DataTable";
 const Home = () => {
+  const [searchValue, setSearchValue] = useState("");
   const [cityDetails, setCityDeatils] = useState([]);
   const [filteredData, setFilteredData] = useState(cityDetails);
-  const handleSearch = (cityName) => {
-    const filtered = cityDetails.map((data) => data.name === cityName);
+  const handleSearchClick = (cityName) => {
+    const filtered = cityDetails.map((data) => {
+      if (data.name.toLowerCase().includes(cityName.toLowerCase())) {
+        return data;
+      }
+      return "";
+    });
     setFilteredData(filtered);
+    // return filtered;
+  };
+  const handleSearchChange = (event) => {
+    setSearchValue(event.target.value);
   };
   const getCityDetails = async () => {
     const response = await fetch(
-      "https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/geonames-all-cities-with-a-population-1000/records?limit=20",
+      "https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/geonames-all-cities-with-a-population-1000/records?limit=30",
     );
     const result = await response.json();
-    console.log(result);
+    // console.log(result);
     setCityDeatils(result.results);
+    setFilteredData(result.results);
   };
   useEffect(() => {
     getCityDetails();
   }, []);
   return (
     <div>
-      <Header DataList={cityDetails} handleSearch={handleSearch} />
-      <div>
-        <table className="table table-bordered border-primary">
-          <thead>
-            <tr>
-              <th>City Name</th>
-              <th>Country</th>
-              <th>Timezone</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredData.map((city) => {
-              return (
-                <tr>
-                  <td>
-                    <a href="/#">{city.name}</a>
-                  </td>
-                  <td>{city.cou_name_en}</td>
-                  <td>{city.timezone}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+      <Header
+        DataList={cityDetails}
+        searchValue={searchValue}
+        handleSearchClick={handleSearchClick}
+        handleSearchChange={handleSearchChange}
+      />
+      <CityDetails CityData={filteredData} />
     </div>
   );
 };
