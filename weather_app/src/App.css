@@ -41,13 +41,17 @@
   flex-direction: row;
 }
 .form-control {
-  width: 50%;
-  margin-right: -60px;
+  width: 70%;
+  margin-right: -70px;
 }
 
 #datalistOptions {
-  position: relative;
-  /* display: inline-block; */
+  position: absolute;
+  top: 100%; /* Position the suggestion box below the input field */
+  left: 0;
+  width: 100%; /* Set the width to match the input field */
+  background-color: white;
+  border: 1px solid #ccc;
 }
 
 .container1 {
